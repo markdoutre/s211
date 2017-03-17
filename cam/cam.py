@@ -36,9 +36,6 @@ def rx_msg(msg):
       if topics[2] == "cmd":
       # camera command
 
-        epoch = str(msg.payload)
-        filename = str("/tmp/cam.jpg")
-        #print filename
 
         stream = io.BytesIO()
         with picamera.PiCamera() as camera:
@@ -48,7 +45,6 @@ def rx_msg(msg):
             # Camera warm-up time
             time.sleep(2)
             #camera.capture('/home/pi/openhab/webapps/images/cam.jpg')
-            #camera.capture(filename)
             camera.capture(stream,format='jpeg')
             stream.seek(0)
 
@@ -57,7 +53,6 @@ def rx_msg(msg):
             with io.BytesIO() as output:
               with Image.open(stream) as img:
                 draw =ImageDraw.Draw(img)
-                #font = ImageFont.truetype("LiberationSans-Regular.ttf", 16)
                 draw.text((0,0),str(datetime.datetime.utcnow()),(255,255,255)) 
                 img.save(output, 'JPEG')
               databuf = bytearray(output.getvalue())
